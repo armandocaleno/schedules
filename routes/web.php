@@ -28,6 +28,7 @@ Route::middleware([
         return view('dashboard');
     })->name('dashboard');
 
+    // calendario
     Route::get('/calendario', [CalendarController::class, 'index'])->name('calendar');
 
     Route::get('/cargos', [PositionController::class, 'index'])->name('positions.index');
