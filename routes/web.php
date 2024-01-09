@@ -31,5 +31,6 @@ Route::middleware([
     // calendario
     Route::get('/calendario', [CalendarController::class, 'index'])->name('calendar');
 
+    // cargos
     Route::get('/cargos', [PositionController::class, 'index'])->name('positions.index');
 });
