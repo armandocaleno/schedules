@@ -39,6 +39,7 @@ class CalendarController extends Controller
             'end' => '2024-01-08 17:00:00',
             'empleado_id' => '1',
             'rol' => 'Kioskos',
+            'color' => '#1c2c34'
         ];
 
         $events[] = [
