@@ -5,7 +5,7 @@
         </h2>
     </x-slot>
 
-    <div class="py-4">
+    <div class="pt-4 pb-28 sm:pb-4">
         <div class=" mx-auto sm:px-6 md:pl-20">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
                 <div id="calendar" class=" p-4"></div>
