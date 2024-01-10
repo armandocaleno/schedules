@@ -23,12 +23,6 @@ class CalendarController extends Controller
                 $area = $shift->area->name;
             }
 
-            // validar dia libre
-            if ($shift->schedule->start === '00:00:00') {
-                $allDay = true;
-                $color = '#A93226';
-            }
-
             // si hay salto de dia aumenta un dia en la fecha del final del turno.
             if ($shift->schedule->skip == '1') {
                 $end = date("Y-m-d",strtotime($shift->date."+ 1 days"));
