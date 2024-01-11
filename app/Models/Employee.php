@@ -11,7 +11,7 @@ class Employee extends Model
 
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
-    protected $with = ['position'];
+    protected $with = ['position', 'setting'];
 
     //Relación uno a muchos inversa
     function position() {
@@ -22,5 +22,9 @@ class Employee extends Model
     public function shifts()
     {
         return $this->hasMany(Shift::class);
+    }
+
+    function setting() {
+        return $this->belongsTo(Setting::class);
     }
 }

@@ -14,9 +14,10 @@ class SettingSeeder extends Seeder
     public function run(): void
     {
         Setting::create([
-            'total_days_month' => '30',
-            'total_days_recess' => '8',
-            'total_hours_month' => '160'
+            'name' => 'normal',
+            'total_days_week' => '5',
+            'total_days_recess_week' => '2',
+            'total_days_month' => '30'
         ]);
     }
 }
