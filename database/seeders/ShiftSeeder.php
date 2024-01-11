@@ -30,7 +30,7 @@ class ShiftSeeder extends Seeder
             'employee_id' => Employee::find(2)->id,
             'schedule_id' => Schedule::find(2)->id,
             'area_id' => Area::find(2)->id,
-            'recess_id' => Recess::find(1)->id,
+            'recess_id' => Recess::find(2)->id,
         ]);
 
         Shift::create([
