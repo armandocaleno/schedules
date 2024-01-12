@@ -13,7 +13,8 @@
 
             <div>
                 <x-label value="Empleado *" />
-                <select name="" id="" wire:model.change="shift.employee_id" class=" w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                <select name="" id="" wire:model.change="shift.employee_id"
+                    class=" w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                     <option value="">Seleccione</option>
                     @foreach ($employees as $item)
                         <option value="{{ $item->id }}">{{ $item->name }} {{ $item->lastname }}</option>
@@ -24,10 +25,12 @@
 
             <div>
                 <x-label value="Horario *" />
-                <select name="" id="" wire:model.change="shift.schedule_id" class=" w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                <select name="" id="" wire:model.change="shift.schedule_id"
+                    class=" w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                     <option value="">Seleccione</option>
                     @foreach ($schedules as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }} ({{ $item->start }} - {{ $item->end }})</option>
+                        <option value="{{ $item->id }}">{{ $item->name }} ({{ $item->start }} -
+                            {{ $item->end }})</option>
                     @endforeach
                 </select>
                 <x-input-error for="shift.schedule_id" class="mt-2" />
@@ -35,7 +38,8 @@
 
             <div>
                 <x-label value="Area" />
-                <select name="" id="" wire:model.change="shift.area_id" class=" w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                <select name="" id="" wire:model.change="shift.area_id"
+                    class=" w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                     <option value="">Seleccione</option>
                     @foreach ($areas as $item)
                         <option value="{{ $item->id }}">{{ $item->name }}</option>
@@ -46,11 +50,15 @@
 
             <div>
                 <x-label value="Descanso" />
-                <select name="" id="" wire:model.change="shift.recess_id" class=" w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                <select name="" id="" wire:model.change="shift.recess_id"
+                    class=" w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                     <option value="">Seleccione</option>
-                    @foreach ($recesses as $item)
-                        <option value="{{ $item->id }}">{{ $item->name }} ({{ $item->start }} - {{ $item->end }})</option>
-                    @endforeach
+                    @if (!is_null($recesses))
+                        @foreach ($recesses as $item)
+                            <option value="{{ $item->id }}">{{ $item->name }} ({{ $item->start }} -
+                                {{ $item->end }})</option>
+                        @endforeach
+                    @endif
                 </select>
                 <x-input-error for="shift.recess_id" class="mt-2" />
             </div>

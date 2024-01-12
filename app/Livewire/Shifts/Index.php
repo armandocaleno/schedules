@@ -5,8 +5,9 @@ namespace App\Livewire\Shifts;
 use Livewire\WithPagination;
 use App\Models\Area;
 use App\Models\Employee;
-use App\Models\Recess;
+use App\Models\Period;
 use App\Models\Schedule;
+use App\Models\Setting;
 use App\Models\Shift;
 use Livewire\Component;
 
@@ -14,8 +15,8 @@ class Index extends Component
 {
     use WithPagination;
 
-    public $shift, $openCreateModal, $confirmingDeletion;
-    public $date, $employee, $schedule;
+    public $shift, $openCreateModal, $confirmingDeletion, $per_page;
+    public $date, $employee, $schedule, $recesses;
 
     protected $rules = [
         'shift.date' => 'required',
@@ -28,6 +29,7 @@ class Index extends Component
     public function mount(shift $shift)
     {
         $this->shift = $shift;
+        $this->per_page = '5';
         $this->openCreateModal = false;
         $this->confirmingDeletion = false;
     }
@@ -37,33 +39,41 @@ class Index extends Component
         $employees = Employee::all();
         $schedules = Schedule::all();
         $areas = Area::all();
-        $recesses = Recess::all();
-     
+
         $shifts = Shift::join('employees', 'shifts.employee_id', 'employees.id')
-        ->when($this->date, function($query){
-            return $query->where('date', $this->date);
-        })->when($this->employee, function($query){
-            return $query->where('employees.name', 'like', '%' . $this->employee . '%')
-                            ->orWhere('employees.lastname', 'like', '%' . $this->employee . '%');
-        })
-        ->when($this->schedule, function($query){
-            return $query->where('schedule_id', $this->schedule);
-        })->orderBy('shifts.date', 'desc')->select('shifts.*')->paginate(5);
-    
-        return view('livewire.shifts.index', compact('shifts', 'employees', 'schedules', 'areas', 'recesses'));
+            ->when($this->date, function ($query) {
+                return $query->where('date', $this->date);
+            })->when($this->employee, function ($query) {
+                return $query->where('employees.name', 'like', '%' . $this->employee . '%')
+                    ->orWhere('employees.lastname', 'like', '%' . $this->employee . '%');
+            })
+            ->when($this->schedule, function ($query) {
+                return $query->where('schedule_id', $this->schedule);
+            })->orderBy('shifts.date', 'desc')->select('shifts.*')->paginate($this->per_page);
+
+        return view('livewire.shifts.index', compact('shifts', 'employees', 'schedules', 'areas'));
     }
 
     // reset de paginacion para encontrar valores en otras paginas ademas de la actual
-    function updatedEmployee() {
+    function updatedEmployee()
+    {
         $this->resetPage();
     }
 
-    function updatedDate() {
+    function updatedDate()
+    {
         $this->resetPage();
     }
 
-    function updatedSchedule() {
+    function updatedSchedule()
+    {
         $this->resetPage();
+    }
+
+    function updatedShiftScheduleId($value)
+    {
+        $schedule = Schedule::find($value);
+        $this->recesses = $schedule->recesses;
     }
 
     // crea una nueva instancia y abre modal para crear nuevo turno
@@ -88,7 +98,48 @@ class Index extends Component
 
         $this->validate($rules);
 
-        // si es un objeto existente lo actualiza
+        // obtiene el empleado actual
+        $employee = Employee::find($this->shift->employee_id);
+        // dd($employee->maxRestEmployeesInDayComplete($this->shift->date));
+        // obtiene el periodo del turno actual
+        $period = Period::find($this->shift->schedule->period_id);
+
+        // valida las configuracion de dias laborados, descansos y horarios nocturnos
+        $p = trim(strtolower($period->name));
+    
+        if ($employee->hasAssignedShiftToday($this->shift->date)) {
+            $this->info('Este empleado ya tiene asignado un turno en este día.');
+            return;
+        }
+
+        if ($p == 'libre') {
+            if ($employee->hasCompletedTotalRecessDays($this->shift->date)) {
+                $this->info('Este empleado ha completado los días de descanso en esta semana.');
+                return;
+            }
+            if ($employee->setting->recess_days_consecutive == Setting::CONSECUTIVE_RECESS_DAYS) {
+                if (!$employee->consecutiveRecess($this->shift->date)) {
+                    $this->info('Los días libre deben ser consecutivos. Este empleado ya tiene un día libre en esta semana.');
+                    return;
+                }
+            }
+            if ($employee->maxRestEmployeesInDayComplete($this->shift->date)) {
+                $this->info('Se ha completado el número máximo de empleados con descanso en este día.');
+                return;
+            }
+        } elseif ($p == 'noche') {
+            if (!$employee->canWorkNight($this->shift->date)) {
+                $this->info('Este empleado ha completado los días de horario nocturno en este mes.');
+                return;
+            }
+        } else {
+            if ($employee->hasCompletedTotalWorkDays($this->shift->date)) {
+                $this->info('Este empleado ha completado el total de días laborables en esta esta semana.');
+                return;
+            }
+        }
+
+        // si es un objeto existente lo actualiza sino crea uno nuevo
         if ($this->shift->id) {
             $this->shift->save();
 
@@ -108,7 +159,7 @@ class Index extends Component
         $this->openCreateModal = false; // cierra modal de creacion de turnos
 
         // renderiza el componente de livewire para actualizar la informacion agregada o modificada
-        $this->render(); 
+        $this->render();
     }
 
     // abre modal de confirmacion para eliminar objeto seleccionado

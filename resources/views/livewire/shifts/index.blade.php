@@ -1,9 +1,20 @@
 <div class=" p-4">
-    <div class=" mb-4">
+    <div class="flex justify-between  mb-4">
 
         {{-- @can('accounting.banks.create')  --}}
         <x-button class="" wire:click="create">Nuevo</x-button>
         {{-- @endcan --}}
+
+        {{-- Per page combobox --}}
+        <div class=" flex items-center space-x-2">
+            <x-label value="Mostrar " />
+            <select name="" class="block border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" wire:model.live="per_page">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="20">20</option>
+            </select>
+            <x-label value="registros " />
+        </div>
     </div>
 
     {{-- Table --}}
