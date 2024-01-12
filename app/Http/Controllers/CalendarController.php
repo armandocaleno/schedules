@@ -31,6 +31,7 @@ class CalendarController extends Controller
             $rest = trim(strtolower($shift->schedule->period->name)); 
             if ($rest == 'libre') {
                 $allDay = true;
+                $color = "#A93226";
             }
 
             // horario normal
