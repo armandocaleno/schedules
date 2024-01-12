@@ -28,6 +28,11 @@ class CalendarController extends Controller
                 $end = date("Y-m-d",strtotime($shift->date."+ 1 days"));
             }
 
+            $rest = trim(strtolower($shift->schedule->period->name)); 
+            if ($rest == 'libre') {
+                $allDay = true;
+            }
+
             // horario normal
             $events[] = [
                 'title' => $shift->employee->name . ' ' . $shift->employee->lastname,
