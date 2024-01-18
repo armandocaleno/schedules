@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
@@ -33,4 +34,9 @@ Route::middleware([
 
     // cargos
     Route::get('/cargos', [PositionController::class, 'index'])->name('positions.index');
+
+    // cargos
+    //Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');
+    Route::match(['get', 'post'], '/areas', [AreaController::class, 'index'])->name('areas.index');
+
 });
