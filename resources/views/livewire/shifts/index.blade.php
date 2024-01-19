@@ -60,15 +60,12 @@
                                     <td class="px-6 py-2 border-b border-gray-200">
                                         {{ \Carbon\Carbon::parse($item->date)->locale('es')->translatedFormat('D d M Y') }}
                                     </td>
-                                    <td class="px-6 py-2 border-b border-gray-200">{{ $item->employee->name }}
-                                        {{ $item->employee->lastname }}</td>
+                                    <td class="px-6 py-2 border-b border-gray-200">
+                                        <a href="{{ route('employees.show',  $item->employee) }}">
+                                            {{ $item->employee->name }} {{ $item->employee->lastname }}
+                                        </a>
+                                    </td>
                                     <td class=" whitespace-nowrap py-2 border-b border-gray-200">
-                                        {{-- <ul>
-                                            <li class="font-medium">{{ $item->schedule->name }}</li>
-                                            <li class="text-sm text-gray-500">
-                                                ({{ \Carbon\Carbon::parse($item->schedule->start)->format('H:i') }} -
-                                                {{ \Carbon\Carbon::parse($item->schedule->end)->format('H:i') }})</li>
-                                        </ul> --}}
                                         <div class="grid grid-cols-2 px-6 ">
                                             <div class=" font-bold flex items-center  px-2"><span>{{ $item->schedule->name }}</span></div>
                                             <div class=" text-left">
