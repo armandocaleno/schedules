@@ -33,10 +33,10 @@ class DatabaseSeeder extends Seeder
         $this->call(PositionSeeder::class);
         $this->call(AreaSeeder::class);
         $this->call(PeriodSeeder::class);
+        $this->call(SettingSeeder::class);
         $this->call(EmployeeSeeder::class);
         $this->call(RecessSeeder::class);
         $this->call(ScheduleSeeder::class);
-        $this->call(SettingSeeder::class);
         $this->call(ShiftSeeder::class);
     }
 }

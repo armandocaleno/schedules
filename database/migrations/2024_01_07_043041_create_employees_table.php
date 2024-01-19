@@ -16,9 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('lastname');
             $table->string('id_number')->unique();
+            $table->foreignId('setting_id')->constrained();
+            $table->foreignId('position_id')->constrained();
             $table->string('email')->nullable();
             $table->date('birthdate')->nullable();
-            $table->foreignId('position_id')->constrained();
+            $table->unsignedInteger('night_shift_days')->default(0);
             $table->timestamps();
         });
     }
