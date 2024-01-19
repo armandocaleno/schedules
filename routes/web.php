@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ShiftController;
@@ -35,6 +36,8 @@ Route::middleware([
     // cargos
     Route::get('/cargos', [PositionController::class, 'index'])->name('positions.index');
 
-    // turnos
+   // turnos
     Route::get('/turnos', [ShiftController::class, 'index'])->name('shifts.index');
+   // cargos
+    Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');
 });
