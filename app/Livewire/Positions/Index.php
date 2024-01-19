@@ -8,11 +8,14 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    public $position, $openCreateModal, $confirmingDeletion, $name;
+    public $position, $openCreateModal, $confirmingDeletion;
 
-    protected $rules = [
-        'position.name' => 'required|unique:positions,name'
-    ];
+    public function rules()
+    {
+        return [
+            'position.name' => 'required|unique:positions,name'
+        ];
+    }
 
     public function mount(Position $position)
     {
@@ -44,16 +47,7 @@ class Index extends Component
 
     public function save()
     {
-        $rules = $this->rules;
-
-        if ($this->position->id) {
-
-            $rules = [
-                'name' => 'required|unique:positions,name,'. $this->position->id,
-            ];
-        }
-
-        $this->validate($rules);
+        $this->validate();
 
         if ($this->position->id) {
             $this->position->save();

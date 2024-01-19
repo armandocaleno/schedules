@@ -32,6 +32,12 @@ class Employee extends Model
         return $this->belongsTo(Setting::class);
     }
 
+    public function age() {
+        if ($this->birthdate) {
+            return Carbon::parse($this->birthdate)->age;
+        }
+    }
+    
     /**
      *
      * Devuelve @var false si ha completado los turnos nocturnos.
@@ -77,6 +83,32 @@ class Employee extends Model
         return $recess_days;
     }
 
+     /**
+     *
+     * Devuelve @var int los cantidad de días de descanso en el mes.
+     *
+     * @var date
+     */
+    function getRecessDaysInMonth($date)
+    {
+        $current_date = CarbonImmutable::parse($date)->locale('es_Ec');
+        $first_day = $current_date->startOfMonth(Carbon::MONDAY)->format('Y-m-d');
+        $last_day = $current_date->endOfMonth(Carbon::SUNDAY)->format('Y-m-d');
+        $recess_days = 0;
+        $shifts = Shift::whereEmployeeId($this->id)->whereBetween('date', [$first_day, $last_day])->get();
+
+        if ($shifts->count()) {
+            foreach ($shifts as $shift) {
+                $period = trim(strtolower($shift->schedule->period->name));
+                if ($period == 'libre') {
+                    $recess_days++;
+                }
+            }
+        }
+
+        return $recess_days;
+    }
+
     /**
      *
      * Devuelve @var int la cantidad de días laborados en la semana.
@@ -88,6 +120,32 @@ class Employee extends Model
         $current_date = CarbonImmutable::parse($date)->locale('es_Ec');
         $first_day = $current_date->startOfWeek(Carbon::MONDAY)->format('Y-m-d');
         $last_day = $current_date->endOfWeek(Carbon::SUNDAY)->format('Y-m-d');
+        $work_days = 0;
+        $shifts = Shift::whereEmployeeId($this->id)->whereBetween('date', [$first_day, $last_day])->get();
+
+        if ($shifts->count()) {
+            foreach ($shifts as $shift) {
+                $period = trim(strtolower($shift->schedule->period->name));
+                if ($period != 'libre') {
+                    $work_days++;
+                }
+            }
+        }
+
+        return $work_days;
+    }
+
+     /**
+     *
+     * Devuelve @var int la cantidad de días laborados en el mes.
+     *
+     * @var date
+     */
+    function getWorkDaysInMonth($date)
+    {
+        $current_date = CarbonImmutable::parse($date)->locale('es_Ec');
+        $first_day = $current_date->startOfMonth(Carbon::MONDAY)->format('Y-m-d');
+        $last_day = $current_date->endOfMonth(Carbon::SUNDAY)->format('Y-m-d');
         $work_days = 0;
         $shifts = Shift::whereEmployeeId($this->id)->whereBetween('date', [$first_day, $last_day])->get();
 
@@ -121,6 +179,32 @@ class Employee extends Model
             foreach ($shifts as $shift) {
                 $period = trim(strtolower($shift->schedule->period->name));
                 if ($period == 'noche') {
+                    $work_days++;
+                }
+            }
+        }
+
+        return $work_days;
+    }
+
+     /**
+     *
+     * Devuelve @var int la cantidad de turnos diurnos laborados en el mes.
+     *
+     * @var date
+     */
+    function getWorkDayDaysInMonth($date)
+    {
+        $current_date = CarbonImmutable::parse($date)->locale('es_Ec');
+        $first_day = $current_date->startOfMonth()->format('Y-m-d');
+        $last_day = $current_date->endOfMonth()->format('Y-m-d');
+        $work_days = 0;
+        $shifts = Shift::whereEmployeeId($this->id)->whereBetween('date', [$first_day, $last_day])->get();
+
+        if ($shifts->count()) {
+            foreach ($shifts as $shift) {
+                $period = trim(strtolower($shift->schedule->period->name));
+                if ($period == 'día') {
                     $work_days++;
                 }
             }
@@ -169,9 +253,22 @@ class Employee extends Model
      *
      * @var date
      */
-    function getShiftToDate($date)
+    function getQtyShiftToDate($date)
     {
         $shifts = Shift::whereEmployeeId($this->id)->where('date', $date)->count();
+
+        return $shifts;
+    }
+
+     /**
+     *
+     * Devuelve @var Shift el turno del día.
+     *
+     * @var date
+     */
+    function getShiftToDate($date)
+    {
+        $shifts = Shift::whereEmployeeId($this->id)->where('date', $date)->first();
 
         return $shifts;
     }
@@ -186,7 +283,7 @@ class Employee extends Model
     {
         $response = false;
 
-        if ($this->getShiftToDate($date) > 0) {
+        if ($this->getQtyShiftToDate($date) > 0) {
             $response = true;
         }
 
@@ -196,7 +293,7 @@ class Employee extends Model
     /**
      *
      * Devuelve @var true si puede agregar un dia libre en la fecha indicada.
-     * Validando que si ya tiene un día libre se añada uno consecutivo.
+     * Validando que si ya tiene un día libre, se añada uno consecutivo.
      * @var date
      */
     function consecutiveRecess($date)
