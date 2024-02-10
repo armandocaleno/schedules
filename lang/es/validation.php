@@ -232,8 +232,13 @@ return [
         'user'                     => 'usuario',
         'username'                 => 'usuario',
         'year'                     => 'año',
-        'employee_id'                 => 'empleado',
-        'schedule_id'                 => 'horario',
-        'recess_id'                   => 'descanso'
+        'employee_id'              => 'empleado',
+        'schedule_id'              => 'horario',
+        'recess_id'                => 'descanso',
+        'lastname'                 => 'apellido',
+        'id_number'                => 'identificación',
+        'night_shift_days'         => 'días de jornada noctura',
+        'position_id'              => 'cargo',
+        'setting_id'               => 'configuración de horario'
     ],
 ];

@@ -5,10 +5,10 @@
         </h2>
     </x-slot>
 
-    <div class="pt-4 pb-28 sm:pb-4">
+    <div class="py-4">
         <div class="mx-auto sm:px-6 md:pl-20">
             <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-                <div class="grid grid-cols-2 gap-4 p-4">
+                <div class="grid grid-cols-1 gap-4 p-4">
                     {{-- INFORMACION BASICA --}}
                     <div class=" p-4 border-2 shadow-lg">
                         <table class="w-full table-auto">
@@ -50,7 +50,7 @@
                         </table>
                     </div>
 
-                    {{-- HOARIO PARA HOY --}}
+                    {{-- HORARIO PARA HOY --}}
                     <div class=" p-4 border-2 shadow-lg">
                         <table class="w-full table-auto">
                             <thead>
@@ -109,7 +109,7 @@
                     </div>
 
                     {{-- BALANCE DEL MES --}}
-                    <div>
+                    <div class=" p-4 border-2 shadow-lg">
                         <section>
                             <table class="table w-full">
                                 <thead>
@@ -119,12 +119,14 @@
                                 </thead>
 
                             </table>
-                            <canvas id="myChart"></canvas>
+                            <div class="relative m-auto h-64 w-full">
+                                <canvas id="myChart"></canvas>
+                            </div>
                         </section>
                     </div>
 
                     {{-- HORARIO PERSONAL --}}
-                    <div class="p-4 border-2 shadow-lg col-span-2">
+                    <div class="md:p-4 border-2 shadow-lg md:col-span-2">
                         <div id="personal_calendar" class=" p-4"></div>
                     </div>
                 </div>
@@ -138,6 +140,8 @@
             integrity="sha512-JPcRR8yFa8mmCsfrw4TNte1ZvF1e3+1SdGMslZvmrzDYxS69J7J49vkFL8u6u8PlPJK+H3voElBtUCzaXj+6ig=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         <script>
+           
+
             //grafico miembros por departamento
             const ctx = document.getElementById('myChart');
             var chart1 = new Chart(ctx, {
@@ -163,7 +167,7 @@
                     }]
                 },
                 options: {
-                    responsive: true,
+                    maintainAspectRatio: false,
                     scales: {
                         y: {
                             beginAtZero: true
@@ -196,7 +200,9 @@
                         const recess_month_days = data.recess_month_days;
 
                         chart1.data.labels = ['Día', 'Noche', 'Mes', 'Libre'];
-                        chart1.data.datasets[0].data = [work_day_days, work_night_days, work_month_days, recess_month_days];
+                        chart1.data.datasets[0].data = [work_day_days, work_night_days, work_month_days,
+                            recess_month_days
+                        ];
                         chart1.update();
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
@@ -237,6 +243,8 @@
                     }
                 });
                 calendar.render();
+                $('.fc-toolbar.fc-header-toolbar').addClass('row col-lg-12');
+                calendar.updateSize()
             });
         </script>
     @endpush

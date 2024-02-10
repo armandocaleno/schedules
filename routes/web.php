@@ -45,5 +45,6 @@ Route::middleware([
   
    // empleados
     Route::get('empleados/show/{employee}', [EmployeeController::class, 'show'])->name('employees.show');
+    Route::get('empleados/index', [EmployeeController::class, 'index'])->name('employees.index');
     Route::get('/grafico1', [EmployeeController::class, 'grafico1'])->name('employees.grafico1');
 });

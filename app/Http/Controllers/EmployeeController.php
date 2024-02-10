@@ -79,4 +79,8 @@ class EmployeeController extends Controller
 
         return response()->json(['work_night_days' => $work_night_days, 'work_month_days' => $work_month_days, 'work_day_days' => $work_day_days,'recess_month_days' => $recess_month_days]);
     }
+
+    function index() {
+        return view('employees.index');
+    }
 }
