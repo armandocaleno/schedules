@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Carbon\CarbonImmutable;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,8 @@ class Employee extends Model
     protected $guarded = ['id', 'created_at', 'updated_at'];
 
     protected $with = ['position', 'setting'];
+
+    protected $attributes = ['night_shift_days' => 0];
 
     //Relación uno a muchos inversa
     function position()
@@ -32,12 +35,56 @@ class Employee extends Model
         return $this->belongsTo(Setting::class);
     }
 
-    public function age() {
+    public function age()
+    {
         if ($this->birthdate) {
             return Carbon::parse($this->birthdate)->age;
         }
     }
-    
+
+    protected function name(): Attribute
+    {
+        return new Attribute(
+            get: function ($value) {
+                return ucwords($value);
+            },
+            set: function ($value) {
+                return strtolower($value);
+            }
+        );
+    }
+
+    protected function lastname(): Attribute
+    {
+        return new Attribute(
+            get: function ($value) {
+                return ucwords($value);
+            },
+            set: function ($value) {
+                return strtolower($value);
+            }
+        );
+    }
+
+    protected function email(): Attribute
+    {
+        return new Attribute(
+            set: function($value) { 
+                return strtolower($value);
+            }
+        );
+    }
+
+    /**
+     *
+     * Devuelve @var string nombre completo del empleado.
+     *
+     */
+    function fullname()
+    {
+        return ucwords($this->name . ' ' . $this->lastname);
+    }
+
     /**
      *
      * Devuelve @var false si ha completado los turnos nocturnos.
@@ -83,7 +130,7 @@ class Employee extends Model
         return $recess_days;
     }
 
-     /**
+    /**
      *
      * Devuelve @var int los cantidad de días de descanso en el mes.
      *
@@ -135,7 +182,7 @@ class Employee extends Model
         return $work_days;
     }
 
-     /**
+    /**
      *
      * Devuelve @var int la cantidad de días laborados en el mes.
      *
@@ -187,7 +234,7 @@ class Employee extends Model
         return $work_days;
     }
 
-     /**
+    /**
      *
      * Devuelve @var int la cantidad de turnos diurnos laborados en el mes.
      *
@@ -260,7 +307,7 @@ class Employee extends Model
         return $shifts;
     }
 
-     /**
+    /**
      *
      * Devuelve @var Shift el turno del día.
      *
@@ -322,7 +369,7 @@ class Employee extends Model
                         }
                     }
                 }
-            }else {
+            } else {
                 $response = true;
             }
         }
@@ -330,7 +377,8 @@ class Employee extends Model
         return $response;
     }
 
-    function maxRestEmployeesInDayComplete($date) {
+    function maxRestEmployeesInDayComplete($date)
+    {
         $response = false;
         $shifts = Shift::where('date', $date)->get();
         $maxRestEmployess = GlobalSettings::first()->max_rest_employees_in_day;

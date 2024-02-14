@@ -35,13 +35,13 @@
                     </thead>
                     <tbody class="bg-white">
                         <tr>
-                            <td class="px-4 py-2 border-b border-gray-200">
+                            <td class="trow">
                                 <x-input type="date" wire:model.lazy="date" />
                             </td>
-                            <td class="px-4 py-2 border-b border-gray-200">
+                            <td class="trow">
                                 <x-input type="text" wire:model.live="employee" />
                             </td>
-                            <td class="px-4 py-2 border-b border-gray-200">
+                            <td class="trow">
                                 <select name="" id="" wire:model.live="schedule"
                                     class="block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
                                     <option value="">Todos</option>
@@ -50,22 +50,22 @@
                                     @endforeach
                                 </select>
                             </td>
-                            <td class="px-4 py-2 border-b border-gray-200"></td>
-                            <td class="px-4 py-2 border-b border-gray-200"></td>
-                            <td class="px-4 py-2 border-b border-gray-200"></td>
+                            <td class="trow"></td>
+                            <td class="trow"></td>
+                            <td class="trow"></td>
                         </tr>
                         @if ($shifts->count())
                             @foreach ($shifts as $item)
                                 <tr>
-                                    <td class="px-6 py-2 border-b border-gray-200">
+                                    <td class="trow">
                                         {{ \Carbon\Carbon::parse($item->date)->locale('es')->translatedFormat('D d M Y') }}
                                     </td>
-                                    <td class="px-6 py-2 border-b border-gray-200">
+                                    <td class="trow">
                                         <a href="{{ route('employees.show',  $item->employee) }}">
-                                            {{ $item->employee->name }} {{ $item->employee->lastname }}
+                                            {{ $item->employee->fullname() }}
                                         </a>
                                     </td>
-                                    <td class=" whitespace-nowrap py-2 border-b border-gray-200">
+                                    <td class=" whitespace-nowrap trow">
                                         <div class="grid grid-cols-2 px-6 ">
                                             <div class=" font-bold flex items-center  px-2"><span>{{ $item->schedule->name }}</span></div>
                                             <div class=" text-left">
@@ -82,12 +82,12 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-2 border-b border-gray-200">
+                                    <td class="trow">
                                         @if ($item->area)
                                             {{ $item->area->name }}
                                         @endif
                                     </td>
-                                    <td class="px-6 py-2 border-b border-gray-200 whitespace-nowrap">
+                                    <td class="trow whitespace-nowrap">
                                         @if ($item->recess)
                                             <ul>
                                                 <li class="font-medium">{{ $item->recess->name }}</li>
@@ -98,7 +98,7 @@
                                             </ul>
                                         @endif
                                     </td>
-                                    <td class="px-6 py-2 border-b border-gray-200 text-right ">
+                                    <td class="trow text-right ">
                                         <button wire:click="edit({{ $item->id }})" class="action-button">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>

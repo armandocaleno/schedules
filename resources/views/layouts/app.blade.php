@@ -41,7 +41,7 @@
 <body class="font-sans antialiased">
     <x-banner />
 
-    <div class="min-h-screen bg-gray-100">
+    <div class="min-h-screen bg-gray-100 pb-20 md:pb-6">
         {{-- @livewire('navigation-menu') --}}
 
         @include('sidebar')

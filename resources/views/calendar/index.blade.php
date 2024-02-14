@@ -14,51 +14,40 @@
     </div>
 
     @push('js')
-    <script>
-        $(document).ready(function() {
-            var events = @json($events);
-            const calendarEl = document.getElementById('calendar')
-            const calendar = new FullCalendar.Calendar(calendarEl, {
-                locale: 'es',
-                weekNumbers: true,
-                weekText: 'S',
-                headerToolbar: {
-                    left: 'prev,next',
-                    center: 'title',
-                    right: 'timeGridWeek,timeGridDay,dayGridMonth,listWeek'
-                },
-                // dayMinWidth: 80,
-                stickyFooterScrollbar: 'auto',
-                views: {
-                    dayGridMonth: { // name of view
-                        displayEventEnd: true,
-                        eventTimeFormat: { // like '14:30:00'
-                            hour: '2-digit',
-                            minute: '2-digit',
-                            meridiem: false
-                        },
-                        // eventContent: function(arg, createElement) {
-                        //     var innerText
-
-                        //     if (arg.event.extendedProps.rol_id) {
-                        //         innerText = arg.event.title 
-                        //         innerText += '\n Rol'
-                        //     } else {
-                        //         innerText = 'normal event'
-                        //     }
-
-                        //     return createElement('i', {}, innerText)
-                        // },
-                        // other view-specific options here
+        <script>
+            $(document).ready(function() {
+                var events = @json($events);
+                const calendarEl = document.getElementById('calendar')
+                const calendar = new FullCalendar.Calendar(calendarEl, {
+                    locale: 'es',
+                    weekNumbers: true,
+                    weekText: 'S',
+                    headerToolbar: {
+                        left: 'prev,next',
+                        center: 'title',
+                        right: 'timeGridWeek,timeGridDay,dayGridMonth,listWeek'
+                    },
+                    // dayMinWidth: 80,
+                    stickyFooterScrollbar: 'auto',
+                    views: {
+                        dayGridMonth: { // name of view
+                            displayEventEnd: true,
+                            eventTimeFormat: { // like '14:30:00'
+                                hour: '2-digit',
+                                minute: '2-digit',
+                                meridiem: false
+                            },
+                        }
+                    },
+                    events: events,
+                    eventClick: function(event) {
+                        console.log(event.event.extendedProps);
                     }
-                },
-                events: events,
-                eventClick: function(event) {
-                    console.log(event.event.extendedProps);
-                }
+                });
+                calendar.render();
+                $('.fc-toolbar.fc-header-toolbar').addClass('row col-lg-12');
+                calendar.updateSize()
             });
-            calendar.render();
-        });
-    </script>
+        </script>
     @endpush
 </x-app-layout>

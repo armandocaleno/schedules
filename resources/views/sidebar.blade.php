@@ -173,6 +173,45 @@
                             </span>
                             <span>Cargos</span>
                         </a>
+
+                        <a href="{{ route('employees.index') }}"
+                            class="flex items-center space-x-2 text-gray-600 transition-colors rounded-lg group hover:bg-gray-600 hover:text-white">
+                            <span aria-hidden="true"
+                                class="p-2 transition-colors rounded-lg group-hover:bg-gray-700 group-hover:text-white">
+                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                </svg>
+                            </span>
+                            <span>Empleados</span>
+                        </a>
+
+                        <a href="{{ route('recesses.index') }}"
+                            class="flex items-center space-x-2 text-gray-600 transition-colors rounded-lg group hover:bg-gray-600 hover:text-white">
+                            <span aria-hidden="true"
+                                class="p-2 transition-colors rounded-lg group-hover:bg-gray-700 group-hover:text-white">
+                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                </svg>
+                            </span>
+                            <span>Descansos</span>
+                        </a>
+
+                        <a href="{{ route('schedules.index') }}"
+                            class="flex items-center space-x-2 text-gray-600 transition-colors rounded-lg group hover:bg-gray-600 hover:text-white">
+                            <span aria-hidden="true"
+                                class="p-2 transition-colors rounded-lg group-hover:bg-gray-700 group-hover:text-white">
+                                <svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                                </svg>
+                            </span>
+                            <span>Horarios</span>
+                        </a>
                     </div>
                 </nav>
             </div>

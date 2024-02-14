@@ -20,8 +20,8 @@
                         @if ($areas->count())                                                                                
                             @foreach ($areas as $item)
                                 <tr>
-                                    <td class="row">{{ $item->name }}</td>
-                                    <td class="px-6 py-2 border-b border-gray-200 text-right ">
+                                    <td class="trow">{{ $item->name }}</td>
+                                    <td class="trow text-right ">
                                         <button wire:click="edit({{ $item }})" class="action-button">
                                             <i class="fa-solid fa-pen-to-square"></i>
                                         </button>
