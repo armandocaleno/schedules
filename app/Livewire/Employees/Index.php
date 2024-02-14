@@ -70,7 +70,7 @@ class Index extends Component
         $this->validate();
 
         if ($this->employee->id) {
-
+            $this->employee->id_number = $this->id_number;
             $this->employee->save();
 
             $this->success('Registro actualizado correctamente.');
@@ -94,9 +94,7 @@ class Index extends Component
 
     public function delete(Employee $employee)
     {
-        
         $this->employee = $employee;
-    
         $this->confirmingDeletion = true;
     }
 
