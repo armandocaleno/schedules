@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\AreaController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\RecessController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -29,9 +31,7 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function () {
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // calendario
     Route::get('/calendario', [CalendarController::class, 'index'])->name('calendar');
@@ -55,4 +55,7 @@ Route::middleware([
 
     // hoarios
     Route::get('/horarios', [ScheduleController::class, 'index'])->name('schedules.index');
+
+    // usuarios       
+    Route::resource('admin/users', UserController::class)->except('show')->names('users');
 });
